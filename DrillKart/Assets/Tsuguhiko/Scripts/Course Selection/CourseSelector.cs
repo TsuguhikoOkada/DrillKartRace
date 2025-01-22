@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using DG.Tweening; // DOTweenを使用
 
 /// <summary>
-/// CourseObjectの選択を左右キーで切り替え、EnterキーでEventSystemを有効化、Backspaceキーで操作を再開するクラス。
+/// CourseObjectの選択を左右キーで切り替え、EnterキーでEventSystemを有効化、戻るボタンで操作を再開するクラス。
 /// </summary>
 public class CourseSelector : MonoBehaviour
 {
@@ -42,12 +43,28 @@ public class CourseSelector : MonoBehaviour
     /// </summary>
     private int movingObjectsCount = 0;
 
+    /// <summary>
+    /// 戻るボタンの参照。
+    /// </summary>
+    [SerializeField] private Button backButton;
+
+    /// <summary>
+    /// 戻るボタンが押されたかを判定するフラグ。
+    /// </summary>
+    private bool isBackButtonPressed = false;
+
     void Start()
     {
         // EventSystemを初期状態で無効化
         if (eventSystem != null)
         {
             eventSystem.SetActive(false);
+        }
+
+        // 戻るボタンのクリックイベント登録
+        if (backButton != null)
+        {
+            backButton.onClick.AddListener(OnBackButtonPressed);
         }
     }
 
@@ -68,17 +85,26 @@ public class CourseSelector : MonoBehaviour
             }
         }
 
-        // EnterキーでEventSystemを有効化（常に受け付ける）
+        // EnterキーでEventSystemを有効化
         if (Input.GetKeyDown(KeyCode.Return))
         {
             EnableEventSystem();
         }
 
-        // Backspaceキーで操作を再開
-        if (!inputEnabled && Input.GetKeyDown(KeyCode.Backspace))
+        // 戻るボタンが押された場合の処理
+        if (isBackButtonPressed)
         {
             DisableEventSystemAndEnableInput();
+            isBackButtonPressed = false; // フラグをリセット
         }
+    }
+
+    /// <summary>
+    /// 戻るボタンが押された際にフラグを立てる。
+    /// </summary>
+    private void OnBackButtonPressed()
+    {
+        isBackButtonPressed = true;
     }
 
     /// <summary>
@@ -87,30 +113,25 @@ public class CourseSelector : MonoBehaviour
     /// <param name="direction">回転方向（1: 左回り, -1: 右回り）。</param>
     private void RotatePositions(int direction)
     {
-        // 現在のTransform座標を一時的に保存
         Vector3[] currentPositions = new Vector3[courseTransforms.Length];
         for (int i = 0; i < courseTransforms.Length; i++)
         {
             currentPositions[i] = courseTransforms[i].position;
         }
 
-        // 各オブジェクトを新しい位置に移動
         movingObjectsCount = courseTransforms.Length;
         for (int i = 0; i < courseTransforms.Length; i++)
         {
             int nextIndex = (i + direction + courseTransforms.Length) % courseTransforms.Length;
 
-            // 滑らかに移動
             courseTransforms[i].DOMove(currentPositions[nextIndex], moveDuration)
                 .SetEase(Ease.OutQuad)
                 .OnComplete(() =>
                 {
-                    // 各オブジェクトの移動が完了したらカウントを減らす
                     movingObjectsCount--;
                 });
         }
 
-        // 選択中のインデックスを更新
         currentIndex = (currentIndex + direction + courseTransforms.Length) % courseTransforms.Length;
     }
 
@@ -122,7 +143,7 @@ public class CourseSelector : MonoBehaviour
         if (eventSystem != null)
         {
             eventSystem.SetActive(true);
-            inputEnabled = false; // キー操作を無効化
+            inputEnabled = false;
             Debug.Log("EventSystem Enabled");
         }
     }
@@ -135,7 +156,7 @@ public class CourseSelector : MonoBehaviour
         if (eventSystem != null)
         {
             eventSystem.SetActive(false);
-            inputEnabled = true; // キー操作を有効化
+            inputEnabled = true;
             Debug.Log("EventSystem Disabled, Input Re-enabled");
         }
     }
