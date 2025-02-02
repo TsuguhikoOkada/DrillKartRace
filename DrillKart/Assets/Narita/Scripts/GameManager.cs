@@ -8,8 +8,11 @@ using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
     [SerializeField, Header("制限時間(Second)")] float _time;
-    [SerializeField,Header("残り時間がα分になると、画面を光らせる")] float _lightingTime;
-    bool _isLighted;
+    [SerializeField, Header("残り時間がα分になると、画面を光らせる")] int _flashMinute;
+    [SerializeField, Header("残り時間がα秒になると、画面を光らせる")] int _flashSecond;
+    [SerializeField] Image _image;
+    bool _isMinuteFlashed;
+    bool _isSecondFlashed;
     private float _timer;
     public float Timer { get => _timer; }
 
@@ -18,15 +21,32 @@ public class GameManager : MonoBehaviour
         _timer = _time;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (_timer > 0)
         {
             _timer -= Time.deltaTime;
-            if (_timer <= _lightingTime && !_isLighted)
+            if (_timer <= _flashMinute * 60 && !_isMinuteFlashed)
             {
-                _isLighted = true;
+                _isMinuteFlashed = true;
+                Sequence sequence = DOTween.Sequence();
+                for (int i = 1; i <= 2; i++)//ループ回数分画面を光らせる
+                {
+                    sequence.Append(_image.DOFade(0.3f, 0.3f));
+                    sequence.Append(_image.DOFade(0, 0.7f));
+                }
+                sequence.Play();
+            }
+            else if (_timer <= _flashSecond && !_isSecondFlashed)
+            {
+                _isSecondFlashed = true;
+                Sequence sequence = DOTween.Sequence();
+                for (int i = 1; i < _flashSecond; i++)//ループ回数分画面を光らせる
+                {
+                    sequence.Append(_image.DOFade(0.3f, 0.3f));
+                    sequence.Append(_image.DOFade(0, 0.7f));
+                }
+                sequence.Play();
             }
         }
     }
