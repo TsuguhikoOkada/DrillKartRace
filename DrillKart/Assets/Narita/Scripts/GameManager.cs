@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,10 +16,12 @@ public class GameManager : MonoBehaviour
     bool _isSecondFlashed;
     private float _timer;
     public float Timer { get => _timer; }
+    private Dictionary<int, int> _scoreDic = new();
 
     void Start()
     {
         _timer = _time;
+        _scoreDic.Add(1, 100);
     }
 
     void Update()
@@ -49,5 +52,28 @@ public class GameManager : MonoBehaviour
                 sequence.Play();
             }
         }
+    }
+
+    public void AddScore(int id, int score)
+    {
+        if (_scoreDic.ContainsKey(id))
+        {
+            _scoreDic[id] += score;
+        }
+        else
+        {
+            _scoreDic.Add(id, score);
+        }
+    }
+
+    public void SetID(int id)
+    {
+        _scoreDic.Add(id, 0);
+    }
+
+    public List<KeyValuePair<int, int>> CurrentScore()
+    {
+
+        return _scoreDic.OrderByDescending(x => x).ToList();
     }
 }

@@ -13,7 +13,7 @@ public class BlockManager : MonoBehaviour
 
     private void Start()
     {
-        _collider = GetComponent<BoxCollider>();
+        TryGetComponent(out _collider);
 
         //Debug用
         Rigidbody rb = GetComponent<Rigidbody>();
