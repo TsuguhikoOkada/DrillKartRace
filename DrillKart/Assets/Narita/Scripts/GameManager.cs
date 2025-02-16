@@ -16,10 +16,6 @@ public class GameManager : MonoBehaviour
     bool _isSecondFlashed;
     private float _timer;
     public float Timer { get => _timer; }
-    public int IronCount;
-    /// <summary>
-    /// KeyにID,ValueにScore
-    /// </summary>
     private Dictionary<int, int> _scoreDic = new();
 
     void Start()
