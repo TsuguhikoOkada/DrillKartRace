@@ -1,18 +1,15 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "BlockData/BlockData", fileName = "BlockData")]
+[CreateAssetMenu(menuName ="BlockData/BlockData",fileName = "BlockData")]
 public class BlockData : ScriptableObject
 {
-    public float InitialRate { get => _initialRate; }
-    [SerializeField, Header("初期レート")]
-    float _initialRate = 50;
     public float InitialPrice { get => _initialPrice; }
     [SerializeField, Header("初期価格")]
     float _initialPrice = 100;
     public float MinPrice { get => _minPrice; }
     [SerializeField, Header("最低価格")]
     float _minPrice = 50;
-    public float RateTrend { get => _rateTrend; set => _rateTrend = value; }
+    public float RateTrend { get => _rateTrend; }
     [SerializeField, Header("レート傾向(上昇)")]
     float _rateTrend = 50;
     public float TrendShift { get => _trendShift; }
