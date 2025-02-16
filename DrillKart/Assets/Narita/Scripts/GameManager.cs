@@ -15,13 +15,17 @@ public class GameManager : MonoBehaviour
     bool _isMinuteFlashed;
     bool _isSecondFlashed;
     private float _timer;
+    public static GameObject Kart;
     public float Timer { get => _timer; }
     private Dictionary<int, int> _scoreDic = new();
 
     void Start()
     {
         _timer = _time;
+
         _scoreDic.Add(1, 100);
+        if (Kart != null)
+            Instantiate(Kart, Vector3.zero, Quaternion.identity);
     }
 
     void Update()

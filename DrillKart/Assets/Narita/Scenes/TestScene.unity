@@ -454,7 +454,6 @@ RectTransform:
   m_Children:
   - {fileID: 330990819}
   - {fileID: 1859376356}
-  - {fileID: 42576317}
   m_Father: {fileID: 1436210864}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -700,7 +699,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameManager: {fileID: 1375415845}
   _timerText: {fileID: 1859376354}
-  _scoreText: {fileID: 0}
+  _scoreText: {fileID: 42576315}
 --- !u!114 &1375415845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -834,6 +833,7 @@ RectTransform:
   m_Children:
   - {fileID: 998234418}
   - {fileID: 1331348231}
+  - {fileID: 42576317}
   m_Father: {fileID: 1375415846}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

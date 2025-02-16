@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class KartSelector : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class KartSelector : MonoBehaviour
 
     public void KartSelect(GameObject kart)
     {
+        GameManager.Kart = kart;
         Debug.Log(kart.name + "‚ª‘I‚Î‚ê‚Ü‚µ‚½");
+        SceneManager.LoadScene("TestScene");
     }
 }
